@@ -1,4 +1,3 @@
-
 window.onload = function(){
   var page;
 
@@ -18,11 +17,8 @@ window.onload = function(){
   xhr.open("GET", document.location.href, true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
-      console.log(xhr);
       page = xhr.responseText;
       setTimeout(function(){compare_page()}, request_interval);
-      console.log('initial fetch of page');
-      console.log(page);
     }
   }
   xhr.send();
@@ -39,19 +35,16 @@ window.onload = function(){
             if(xhr2.responseText != page){
               // If at any point the page changed, reload the page.
               // Using replace so that back button in browser remains functional.
-              console.log('server changed');
-              //location.reload();
+              location.reload();
             }else{
-              // Page unchanged. Recurse.
-              setTimeout(function(){compare_page()}, request_interval);
               // Slow down the requests over a period of time to the lowest rate of 5 seconds.
               if(request_interval < slow_down_to){
                 request_interval += request_interval * slow_down_by;
               }else{
                 request_interval = slow_down_to;
               }
-              console.log('next fetch of page');
-              console.log(request_interval);
+              // Page unchanged. Recurse.
+              setTimeout(function(){compare_page()}, request_interval);
             }
           }
         }
@@ -62,7 +55,6 @@ window.onload = function(){
         if(request_interval < inactive_slow_down_to){
           request_interval += request_interval * slow_down_by;
         }
-        console.log('request denied. Asking again. ');
         setTimeout(function(){compare_page()}, request_interval);
       }
     });
