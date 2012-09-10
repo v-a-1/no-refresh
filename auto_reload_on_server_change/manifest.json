@@ -10,7 +10,6 @@
   "content_scripts": [
     {
       "matches": ["http://localhost/*"],
-      "css": ["style.css"],
       "js": ["script.js"]
     }
   ]
