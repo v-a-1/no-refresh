@@ -28,7 +28,7 @@ window.onload = function(){
       page = xhr.responseText;
       setTimeout(function(){start_polling()}, request_interval);
     }
-  }
+  } 
   xhr.send();
 }
 
