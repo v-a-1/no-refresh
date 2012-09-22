@@ -3,11 +3,11 @@
   "version": "1.2",
   "manifest_version": 2,
   "description": "Removes the need to constantly switch between your text-editor/IDE and the browser window while developing locally.",
+  "options_page": "options.html",
   "permissions": [
     "contextMenus", 
     "tabs",
-    "*://localhost/*",
-    "*://127.0.0.1/*"
+    "*://*/*"
   ],
   "background": {
     "scripts": ["bg.js"]
