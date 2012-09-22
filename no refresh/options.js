@@ -1,3 +1,5 @@
+// Refer https://developer.chrome.com/extensions/contentSecurityPolicy.html
+// and http://developer.chrome.com/extensions/options.html
 document.addEventListener('DOMContentLoaded', function () {
   restore_options();
   document.querySelector('button').addEventListener('click', save_options);
