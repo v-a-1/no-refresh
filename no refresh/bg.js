@@ -31,9 +31,35 @@ chrome.tabs.onActivated.addListener(onActivated);
 // the polling can accordingly change.
 chrome.tabs.onUpdated.addListener(onUpdated);
 
+var url_is_allowed = function(url){
+
+  if(!localStorage.include_url_patterns){return false;}
+
+  var to_url_regex = function(item){
+    return item
+      .replace(/^\s\s*/, '') // ltrim
+      .replace(/\s\s*$/, '') // rtrim
+      .replace(/\//g, '\\/') // escape /
+      .replace(/\*/g, '.*?') // shortcut * accepted in url patterns
+      .replace(/^/, '(^') // enclose in parentheses
+      .replace(/$/, '$)'); // ditto
+  };
+
+  var inc = localStorage.include_url_patterns.replace(/\r\n/g, "\n").split("\n");
+  var exc = localStorage.exclude_url_patterns.replace(/\r\n/g, "\n").split("\n");
+  var inc_pattern = inc.map(to_url_regex).join("|"); // One long regex
+  var exc_pattern = exc.map(to_url_regex).join("|");
+
+  return (url.match(inc_pattern) !== null &&
+    url.match(exc_pattern) === null) ? true : false;
+
+};
+
 var poll = function(url, tab_id){
   var page;
   if (url === ''){ clearTimeout(next_poll); return; }
+  // Check whether this url passes allowed patterns
+  if(!url_is_allowed(url)){ return; }
 
   // Set to 0 for instant (As long as each xmlhttpRequest takes) reload.
   // Or set to 4000 (ms) etc. so that there is a minimum gap
